@@ -38,7 +38,7 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
  
-  WiFi.begin("CasaDoTheodoro1", "09012011");
+  WiFi.begin("ssid", "password");
 
   int wait_passes = 0;
     while (WiFi.status() != WL_CONNECTED) {           // Wait for connection
