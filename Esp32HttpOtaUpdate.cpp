@@ -17,6 +17,7 @@
 
 #define OTAFIRMWAREREPO "https://firebasestorage.googleapis.com/v0/b/firmwareota-a580e.appspot.com/o/ESP32OTAexample%2Ffirmware.bin?alt=media"
 
+bool SoftwareDownloadedInThisCycle = false;
 
 WiFiMulti WiFiMulti;
 
@@ -36,8 +37,8 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  //WiFiMulti.addAP("CasaDoTheodoro1", "09012011");
-  WiFi.begin("ssid", "password");
+ 
+  WiFi.begin("CasaDoTheodoro1", "09012011");
 
   int wait_passes = 0;
     while (WiFi.status() != WL_CONNECTED) {           // Wait for connection
@@ -70,14 +71,14 @@ void update_error(int err) {
 
 void loop() {
 
-  Serial.println("Version 1");
+  Serial.println("Version 101");
   delay(1000);
 
   // wait for WiFi connection
-  if ((WiFi.status() == WL_CONNECTED)) {
-
-    //WiFiClient client;
+  if ((WiFi.status() == WL_CONNECTED && SoftwareDownloadedInThisCycle == false)) {
     
+    SoftwareDownloadedInThisCycle = true;
+
     WiFiClientSecure client; 
     client.setInsecure();
 
@@ -87,7 +88,7 @@ void loop() {
     // On a good connection the LED should flash regularly. On a bad connection the LED will be
     // on much longer than it will be off. Other pins than LED_BUILTIN may be used. The second
     // value is used to put the LED on. If the LED is on with HIGH, that value should be passed
-    // httpUpdate.setLedPin(LED_BUILTIN, LOW);
+    httpUpdate.setLedPin(LED_BUILTIN, LOW);
 
     httpUpdate.onStart(update_started);
     httpUpdate.onEnd(update_finished);
